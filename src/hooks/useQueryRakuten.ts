@@ -1,17 +1,17 @@
 import axios from 'axios'
 import { useQuery } from 'react-query'
-import { RakutenRes } from 'types/types'
+import { RakutenQueryType, RakutenRes } from 'types/types'
 
-const getRakutenData = async (keyword: string) => {
+const getRakutenData = async () => {
   const { data } = await axios.get<RakutenRes>(
-    `${process.env.REACT_APP_RAKUTEN_URL}${keyword}`
+    `${process.env.REACT_APP_RAKUTEN_URL}`
   )
-  return data
+  return data.hotels
 }
-export const useQueryRakutenData = (keyword: string) => {
-  return useQuery<RakutenRes, Error>({
+export const useQueryRakutenData = () => {
+  return useQuery<RakutenQueryType, Error>({
     queryKey: 'rakuten',
-    queryFn: () => getRakutenData(keyword),
-    enabled: false,
+    queryFn: () => getRakutenData(),
+    staleTime: Infinity,
   })
 }

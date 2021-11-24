@@ -6,5 +6,7 @@ export type CounterState = {
 }
 
 export type RakutenRes = typeof rakutenData
+export type RakutenQueryType = typeof rakutenData.hotels
 
 export type HotPepperRes = typeof hotPepperData
+export type HotPepperQueryType = typeof hotPepperData.results.shop

@@ -6,8 +6,8 @@ type Props = {
 
 export const Layout: VFC<Props> = ({ children }) => {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-800 text-white text-sm font-mono">
-      <main className="flex flex-1 flex-col justify-center items-center w-screen">
+    <div className="flex flex-col items-center min-h-screen bg-gray-50 text-gray-500 text-sm font-mono">
+      <main className="flex flex-1 flex-col pt-5 space-y-3 items-center w-screen">
         {children}
       </main>
     </div>
