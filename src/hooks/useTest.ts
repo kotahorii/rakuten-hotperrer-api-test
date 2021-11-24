@@ -1,14 +1,16 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useQueryRakutenData } from 'hooks/useQueryRakuten'
-import { useQueryHotPeppers } from './useQueryHotPeppers'
+import { useMutateHotPepper } from './useMutateHotPepper'
 
 export const useTest = () => {
   const [keyword, setKeyword] = useState('')
   const encodedKeyword = encodeURI(keyword)
-  const { data: rakutenData, refetch: refetchRakutenData } =
-    useQueryRakutenData(encodedKeyword)
-  const { data: hotPepperData, refetch: refetchHotPepperData } =
-    useQueryHotPeppers()
+  const {
+    data: rakutenData,
+    refetch: refetchRakutenData,
+    isError,
+  } = useQueryRakutenData(encodedKeyword)
+  const { postHotPepperParams } = useMutateHotPepper()
 
   const keywordChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value),
@@ -16,11 +18,12 @@ export const useTest = () => {
   )
   const refetchData = useCallback(() => {
     refetchRakutenData()
-  }, [refetchRakutenData])
-
+    postHotPepperParams.mutate(encodedKeyword)
+  }, [refetchRakutenData, postHotPepperParams, encodedKeyword])
   return {
+    isError,
+    postHotPepperParams,
     rakutenData,
-    hotPepperData,
     keyword,
     encodedKeyword,
     keywordChange,
