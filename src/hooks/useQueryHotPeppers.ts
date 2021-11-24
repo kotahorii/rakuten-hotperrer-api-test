@@ -13,5 +13,6 @@ export const useQueryHotPeppers = () => {
     queryKey: 'hotPepper',
     queryFn: () => getHotPepperData(),
     staleTime: Infinity,
+    enabled: false,
   })
 }

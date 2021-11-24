@@ -4,8 +4,9 @@ import { useQueryHotPeppers } from './useQueryHotPeppers'
 
 export const useTest = () => {
   const [keyword, setKeyword] = useState('')
+  const encodedKeyword = encodeURI(keyword)
   const { data: rakutenData, refetch: refetchRakutenData } =
-    useQueryRakutenData()
+    useQueryRakutenData(encodedKeyword)
   const { data: hotPepperData, refetch: refetchHotPepperData } =
     useQueryHotPeppers()
 
@@ -15,7 +16,14 @@ export const useTest = () => {
   )
   const refetchData = useCallback(() => {
     refetchRakutenData()
-    refetchHotPepperData()
-  }, [refetchRakutenData, refetchHotPepperData])
-  return { rakutenData, hotPepperData, keyword, keywordChange, refetchData }
+  }, [refetchRakutenData])
+
+  return {
+    rakutenData,
+    hotPepperData,
+    keyword,
+    encodedKeyword,
+    keywordChange,
+    refetchData,
+  }
 }

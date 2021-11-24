@@ -22,7 +22,15 @@ export const Test: VFC = () => {
           submit
         </button>
       </div>
-      <div className="grid grid-cols-2"></div>
+      <div className="grid grid-cols-2">
+        <ul className="flex flex-col space-y-2">
+          {rakutenData?.map((rakuten) => (
+            <li key={rakuten.hotel[0].hotelBasicInfo?.hotelNo}>
+              {rakuten.hotel[0].hotelBasicInfo?.hotelName}
+            </li>
+          ))}
+        </ul>
+      </div>
     </Layout>
   )
 }
