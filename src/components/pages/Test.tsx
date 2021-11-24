@@ -11,6 +11,7 @@ export const Test: VFC = () => {
     setAddressData,
     address,
     changeAddress,
+    validatedAddress,
     isError,
     isLoading,
     titleCut,
@@ -42,7 +43,8 @@ export const Test: VFC = () => {
           submit
         </button>
       </div>
-      <div className="grid grid-cols-2 w-full space-x-3 pt-5">
+      {validatedAddress}
+      <div className="grid grid-cols-2 w-full pt-5">
         <div className="flex flex-col items-center bg-green-100 rounded-lg w-full">
           {isError ? (
             <p className="text-lg mt-10 ">データが存在しませんでした。</p>
@@ -77,7 +79,7 @@ export const Test: VFC = () => {
           {hotPepperData?.length === 0 ? (
             <p className="text-lg mt-10">データが存在しませんでした。</p>
           ) : (
-            <ul className="flex flex-col space-y-2 overflow-auto space-y-2 w-full min-h-screen p-2">
+            <ul className="flex flex-col space-y-2 overflow-auto space-y-2 w-full h-screen p-2">
               {hotPepperData?.map((hotPepper) => (
                 <li
                   className="bg-green-50 p-3 text-gray-500 font-semibold rounded-lg w-full h-32"

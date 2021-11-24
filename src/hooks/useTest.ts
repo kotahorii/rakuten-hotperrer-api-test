@@ -5,11 +5,14 @@ import { useQueryAddress } from './useQueryAdress'
 
 export const useTest = () => {
   const [address, setAddress] = useState('')
+  const validatedAddress = address.replace(/[０-９]/g, (s) =>
+    String.fromCharCode(s.charCodeAt(0) - 0xfee0)
+  )
   const {
     data: addressData,
     isLoading,
     refetch: refetchAddress,
-  } = useQueryAddress(address)
+  } = useQueryAddress(validatedAddress)
   const hotPepperKeyword = addressData
     ? encodeURI(
         addressData![0].address1 +
@@ -51,6 +54,7 @@ export const useTest = () => {
   return {
     isError,
     isLoading,
+    validatedAddress,
     address,
     changeAddress,
     postHotPepperParams,
