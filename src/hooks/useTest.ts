@@ -1,26 +1,47 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useQueryRakutenData } from 'hooks/useQueryRakuten'
 import { useMutateHotPepper } from './useMutateHotPepper'
+import { useQueryAddress } from './useQueryAdress'
 
 export const useTest = () => {
-  const [keyword, setKeyword] = useState('')
-  const hotPepperKeyword = encodeURI(keyword.replace(/\s+/g, ''))
-  const encodedKeyword = encodeURI(keyword)
+  const [address, setAddress] = useState('')
+  const {
+    data: addressData,
+    isLoading,
+    refetch: refetchAddress,
+  } = useQueryAddress(address)
+  const hotPepperKeyword = addressData
+    ? encodeURI(
+        addressData![0].address1 +
+          addressData[0].address2 +
+          addressData[0].address3
+      )
+    : ''
+
+  const rakutenKeyword = addressData
+    ? encodeURI(addressData[0].address1 + addressData[0].address2)
+    : ''
+
   const {
     data: rakutenData,
     refetch: refetchRakutenData,
     isError,
-  } = useQueryRakutenData(encodedKeyword)
+  } = useQueryRakutenData(rakutenKeyword)
   const { postHotPepperParams } = useMutateHotPepper()
 
-  const keywordChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value),
+  const changeAddress = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => setAddress(e.target.value),
     []
   )
+
   const refetchData = useCallback(() => {
     refetchRakutenData()
     postHotPepperParams.mutate(hotPepperKeyword)
   }, [refetchRakutenData, postHotPepperParams, hotPepperKeyword])
+
+  const setAddressData = useCallback(() => {
+    refetchAddress()
+  }, [refetchAddress])
 
   const titleCut = useCallback(
     (title: string | undefined) =>
@@ -29,10 +50,13 @@ export const useTest = () => {
   )
   return {
     isError,
+    isLoading,
+    address,
+    changeAddress,
     postHotPepperParams,
     rakutenData,
-    keyword,
-    keywordChange,
+    setAddressData,
+    addressData,
     refetchData,
     titleCut,
   }

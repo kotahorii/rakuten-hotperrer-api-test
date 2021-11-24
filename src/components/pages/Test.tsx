@@ -7,25 +7,34 @@ import { HotPepperQueryType } from 'types/types'
 export const Test: VFC = () => {
   const {
     rakutenData,
-    keyword,
-    keywordChange,
     refetchData,
+    setAddressData,
+    address,
+    changeAddress,
     isError,
+    isLoading,
     titleCut,
   } = useTest()
   const queryClient = useQueryClient()
   const hotPepperData =
     queryClient.getQueryData<HotPepperQueryType>('hotPepper')
+  if (isLoading) return <Layout>Loading...</Layout>
   return (
     <Layout>
       <div className="flex flex-row space-x-2">
         <input
           className="p-2 border-gray-200 border rounded-md"
           type="text"
-          value={keyword}
-          onChange={keywordChange}
+          value={address}
+          onChange={changeAddress}
           placeholder="keyword"
         />
+        <button
+          onClick={setAddressData}
+          className="px-3 py-2 bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
+        >
+          Set
+        </button>
         <button
           onClick={refetchData}
           className="px-3 py-2 bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
