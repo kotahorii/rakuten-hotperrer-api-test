@@ -5,8 +5,14 @@ import { useQueryClient } from 'react-query'
 import { HotPepperQueryType } from 'types/types'
 
 export const Test: VFC = () => {
-  const { rakutenData, keyword, keywordChange, refetchData, isError } =
-    useTest()
+  const {
+    rakutenData,
+    keyword,
+    keywordChange,
+    refetchData,
+    isError,
+    titleCut,
+  } = useTest()
   const queryClient = useQueryClient()
   const hotPepperData =
     queryClient.getQueryData<HotPepperQueryType>('hotPepper')
@@ -22,7 +28,7 @@ export const Test: VFC = () => {
         />
         <button
           onClick={refetchData}
-          className="px-3 py-2 bg-indigo-400 hover:bg-indigo-500 shadow-lg text-white rounded-full"
+          className="px-3 py-2 bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
         >
           submit
         </button>
@@ -32,14 +38,26 @@ export const Test: VFC = () => {
           {isError ? (
             <p className="text-lg mt-10 ">データが存在しませんでした。</p>
           ) : (
-            <ul className="flex flex-col space-y-2 min-h-full p-2">
+            <ul className="flex flex-col overflow-auto space-y-2 h-screen p-2">
               {rakutenData?.map((rakuten) => (
                 <li
-                  className="bg-green-50 p-3 text-gray-500 font-semibold rounded-lg w-full h-32"
+                  className="bg-green-50 p-3 flex flex-row space-x-3 text-gray-500 font-semibold rounded-lg w-full h-32"
                   key={rakuten.hotel[0].hotelBasicInfo?.hotelNo}
                 >
-                  <a className="" href="">
-                    {rakuten.hotel[0].hotelBasicInfo?.hotelName}
+                  <div className="w-32 h-24 flex flex-col justify-center items-center">
+                    <img
+                      className="object-cover w-full h-full rounded-lg shadow-md"
+                      src={rakuten.hotel[0].hotelBasicInfo?.hotelImageUrl}
+                      alt="hotel"
+                    />
+                  </div>
+                  <a
+                    className="p-2 text-lg rounded-lg hover:bg-gray-200"
+                    href={rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {titleCut(rakuten.hotel[0].hotelBasicInfo?.hotelName)}
                   </a>
                 </li>
               ))}
@@ -50,7 +68,7 @@ export const Test: VFC = () => {
           {hotPepperData?.length === 0 ? (
             <p className="text-lg mt-10">データが存在しませんでした。</p>
           ) : (
-            <ul className="flex flex-col space-y-2 w-full min-h-screen p-2">
+            <ul className="flex flex-col space-y-2 overflow-auto space-y-2 w-full min-h-screen p-2">
               {hotPepperData?.map((hotPepper) => (
                 <li
                   className="bg-green-50 p-3 text-gray-500 font-semibold rounded-lg w-full h-32"
@@ -59,8 +77,10 @@ export const Test: VFC = () => {
                   <a
                     className="p-2 rounded-lg hover:bg-gray-200"
                     href={hotPepper.urls.pc}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    {hotPepper.name}
+                    {titleCut(hotPepper.name)}
                   </a>
                   <p>{hotPepper.address}</p>
                   <p>{hotPepper.genre.name}</p>

@@ -4,6 +4,7 @@ import { useMutateHotPepper } from './useMutateHotPepper'
 
 export const useTest = () => {
   const [keyword, setKeyword] = useState('')
+  const hotPepperKeyword = encodeURI(keyword.replace(/\s+/g, ''))
   const encodedKeyword = encodeURI(keyword)
   const {
     data: rakutenData,
@@ -18,15 +19,21 @@ export const useTest = () => {
   )
   const refetchData = useCallback(() => {
     refetchRakutenData()
-    postHotPepperParams.mutate(encodedKeyword)
-  }, [refetchRakutenData, postHotPepperParams, encodedKeyword])
+    postHotPepperParams.mutate(hotPepperKeyword)
+  }, [refetchRakutenData, postHotPepperParams, hotPepperKeyword])
+
+  const titleCut = useCallback(
+    (title: string | undefined) =>
+      title && title.length > 25 ? title.substr(0, 25) + '...' : title,
+    []
+  )
   return {
     isError,
     postHotPepperParams,
     rakutenData,
     keyword,
-    encodedKeyword,
     keywordChange,
     refetchData,
+    titleCut,
   }
 }
