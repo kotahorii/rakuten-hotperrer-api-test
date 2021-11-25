@@ -8,6 +8,7 @@ export const Test: VFC = () => {
   const {
     rakutenData,
     refetchData,
+    isValidSubmit,
     setAddressData,
     address,
     prefecture,
@@ -21,11 +22,11 @@ export const Test: VFC = () => {
     isNotValidData,
     isError,
     isLoading,
-    titleCut,
+    textCut,
   } = useTest()
   const queryClient = useQueryClient()
-  const hotPepperData =
-    queryClient.getQueryData<HotPepperQueryType>('hotPepper')
+  const hotPepperDetailData =
+    queryClient.getQueryData<HotPepperQueryType>('hotPepperDetail')
   if (isLoading) return <Layout>Loading...</Layout>
   return (
     <Layout>
@@ -46,7 +47,8 @@ export const Test: VFC = () => {
         </button>
         <button
           onClick={refetchData}
-          className="px-3 py-2 bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
+          disabled={isValidSubmit}
+          className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
         >
           submit
         </button>
@@ -82,7 +84,7 @@ export const Test: VFC = () => {
             <ul className="flex flex-col overflow-auto space-y-2 w-full h-screen p-2">
               {rakutenData?.map((rakuten) => (
                 <li
-                  className="bg-green-50 p-3 flex flex-row space-x-3 text-gray-500 font-semibold rounded-lg w-full h-32"
+                  className="bg-gray-50 p-3 flex flex-row space-x-3 text-gray-500 rounded-lg w-full h-32"
                   key={rakuten.hotel[0].hotelBasicInfo?.hotelNo}
                 >
                   <div className="w-32 h-24 flex flex-col justify-center items-center">
@@ -92,36 +94,51 @@ export const Test: VFC = () => {
                       alt="hotel"
                     />
                   </div>
-                  <a
-                    className="p-2 text-lg rounded-lg hover:bg-green-100"
-                    href={rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {titleCut(rakuten.hotel[0].hotelBasicInfo?.hotelName)}
-                  </a>
+                  <div className="flex flex-col space-x-1">
+                    <a
+                      className="p-2 text-lg h-11 font-semibold rounded-lg hover:bg-green-100"
+                      href={
+                        rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {textCut(rakuten.hotel[0].hotelBasicInfo?.hotelName, 27)}
+                    </a>
+                    <div className="flex flex-col space-y-1 mt-2">
+                      <p>
+                        {textCut(
+                          rakuten.hotel[0].hotelBasicInfo?.hotelSpecial,
+                          37
+                        )}
+                      </p>
+                      <p className="text-xs">
+                        {`${rakuten.hotel[0].hotelBasicInfo?.address1}${rakuten.hotel[0].hotelBasicInfo?.address2}`}
+                      </p>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
           )}
         </div>
         <div className="flex flex-col bg-green-200 items-center rounded-lg">
-          {hotPepperData?.length === 0 ? (
+          {hotPepperDetailData?.length === 0 ? (
             <p className="text-lg mt-10">データが存在しませんでした。</p>
           ) : (
             <ul className="flex flex-col space-y-2 overflow-auto space-y-2 w-full h-screen p-2">
-              {hotPepperData?.map((hotPepper) => (
+              {hotPepperDetailData?.map((hotPepper) => (
                 <li
-                  className="bg-green-50 p-3 text-gray-500 font-semibold rounded-lg w-full h-32"
+                  className="bg-gray-50 p-3 text-gray-500 rounded-lg w-full h-32"
                   key={hotPepper.id}
                 >
                   <a
-                    className="p-2 rounded-lg text-lg text-gray-500 hover:bg-green-100"
+                    className="p-2 rounded-lg text-lg text-gray-500 font-semibold hover:bg-green-100"
                     href={hotPepper.urls.pc}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {titleCut(hotPepper.name)}
+                    {textCut(hotPepper.name, 30)}
                   </a>
                   <div className="flex flex-col mt-3 space-y-1">
                     <p>{hotPepper.genre.name}</p>

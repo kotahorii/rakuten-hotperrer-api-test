@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useQueryRakutenData } from 'hooks/useQueryRakuten'
-import { useMutateHotPepper } from './useMutateHotPepper'
+import { useMutateHotPepperDetail } from 'hooks/useMutateHotPepperDetail'
 import { useQueryAddress } from './useQueryAdress'
 import { useAppDispatch, useAppSelector } from 'app/hooks'
 import {
@@ -28,10 +28,9 @@ export const useTest = () => {
     isLoading,
     refetch: refetchAddress,
   } = useQueryAddress(validatedAddress)
+  const { postHotPepperDetailParams } = useMutateHotPepperDetail()
   const hotPepperKeyword = addressData
-    ? encodeURI(
-        addressData.address1 + addressData.address2 + addressData.address3
-      )
+    ? encodeURI(prefecture + city + town.split('町')[0])
     : ''
 
   const prefectureChange = useCallback(
@@ -50,29 +49,26 @@ export const useTest = () => {
     [dispatch]
   )
 
-  const rakutenKeyword = addressData
-    ? encodeURI(addressData.address1 + addressData.address2)
-    : ''
+  const rakutenKeyword = addressData ? encodeURI(prefecture + city) : ''
 
   const {
     data: rakutenData,
     refetch: refetchRakutenData,
     isError,
   } = useQueryRakutenData(rakutenKeyword)
-  const { postHotPepperParams } = useMutateHotPepper()
 
   const refetchData = useCallback(() => {
     refetchRakutenData()
-    postHotPepperParams.mutate(hotPepperKeyword)
-  }, [refetchRakutenData, postHotPepperParams, hotPepperKeyword])
+    postHotPepperDetailParams.mutate(hotPepperKeyword)
+  }, [refetchRakutenData, hotPepperKeyword, postHotPepperDetailParams])
 
   const setAddressData = useCallback(() => {
     refetchAddress().then()
   }, [refetchAddress])
 
-  const titleCut = useCallback(
-    (title: string | undefined) =>
-      title && title.length > 25 ? title.substr(0, 25) + '...' : title,
+  const textCut = useCallback(
+    (title: string | undefined, num: number) =>
+      title && title.length > num ? title.substr(0, num) + '...' : title,
     []
   )
 
@@ -91,6 +87,8 @@ export const useTest = () => {
     setAddress(e.target.value)
   }, [])
 
+  const isValidSubmit = !prefecture || !city || !town
+
   return {
     isNotValidData,
     isError,
@@ -104,11 +102,11 @@ export const useTest = () => {
     townChange,
     address,
     changeAddress,
-    postHotPepperParams,
     rakutenData,
     setAddressData,
     addressData,
     refetchData,
-    titleCut,
+    textCut,
+    isValidSubmit,
   }
 }
