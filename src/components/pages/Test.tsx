@@ -1,8 +1,9 @@
+import { CustomCard } from 'components/organisms/CustomCard'
 import { Layout } from 'components/templates/Layout'
 import { useTest } from 'hooks/useTest'
 import { VFC } from 'react'
 import { useQueryClient } from 'react-query'
-import { HotPepperQueryType } from 'types/types'
+import { HotPepperDetailQueryType, HotPepperQueryType } from 'types/types'
 
 export const Test: VFC = () => {
   const {
@@ -26,7 +27,7 @@ export const Test: VFC = () => {
   } = useTest()
   const queryClient = useQueryClient()
   const hotPepperDetailData =
-    queryClient.getQueryData<HotPepperQueryType>('hotPepperDetail')
+    queryClient.getQueryData<HotPepperDetailQueryType>('hotPepperDetail')
   if (isLoading) return <Layout>Loading...</Layout>
   return (
     <Layout>
@@ -83,41 +84,14 @@ export const Test: VFC = () => {
           ) : (
             <ul className="flex flex-col overflow-auto space-y-2 w-full h-screen p-2">
               {rakutenData?.map((rakuten) => (
-                <li
-                  className="bg-gray-50 p-3 flex flex-row space-x-3 text-gray-500 rounded-lg w-full h-32"
+                <CustomCard
                   key={rakuten.hotel[0].hotelBasicInfo?.hotelNo}
-                >
-                  <div className="w-32 h-24 flex flex-col justify-center items-center">
-                    <img
-                      className="object-cover w-full h-full rounded-lg shadow-md"
-                      src={rakuten.hotel[0].hotelBasicInfo?.hotelImageUrl}
-                      alt="hotel"
-                    />
-                  </div>
-                  <div className="flex flex-col space-x-1">
-                    <a
-                      className="p-2 text-lg h-11 font-semibold rounded-lg hover:bg-green-100"
-                      href={
-                        rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {textCut(rakuten.hotel[0].hotelBasicInfo?.hotelName, 27)}
-                    </a>
-                    <div className="flex flex-col space-y-1 mt-2">
-                      <p>
-                        {textCut(
-                          rakuten.hotel[0].hotelBasicInfo?.hotelSpecial,
-                          37
-                        )}
-                      </p>
-                      <p className="text-xs">
-                        {`${rakuten.hotel[0].hotelBasicInfo?.address1}${rakuten.hotel[0].hotelBasicInfo?.address2}`}
-                      </p>
-                    </div>
-                  </div>
-                </li>
+                  src={rakuten.hotel[0].hotelBasicInfo?.hotelImageUrl}
+                  href={rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl}
+                  title={rakuten.hotel[0].hotelBasicInfo?.hotelName}
+                  special={rakuten.hotel[0].hotelBasicInfo?.hotelSpecial}
+                  address={`${rakuten.hotel[0].hotelBasicInfo?.address1}${rakuten.hotel[0].hotelBasicInfo?.address2}`}
+                />
               ))}
             </ul>
           )}
@@ -128,23 +102,14 @@ export const Test: VFC = () => {
           ) : (
             <ul className="flex flex-col space-y-2 overflow-auto space-y-2 w-full h-screen p-2">
               {hotPepperDetailData?.map((hotPepper) => (
-                <li
-                  className="bg-gray-50 p-3 text-gray-500 rounded-lg w-full h-32"
+                <CustomCard
                   key={hotPepper.id}
-                >
-                  <a
-                    className="p-2 rounded-lg text-lg text-gray-500 font-semibold hover:bg-green-100"
-                    href={hotPepper.urls.pc}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {textCut(hotPepper.name, 30)}
-                  </a>
-                  <div className="flex flex-col mt-3 space-y-1">
-                    <p>{hotPepper.genre.name}</p>
-                    <p className="text-xs">{hotPepper.address}</p>
-                  </div>
-                </li>
+                  src={hotPepper.photo.pc.l}
+                  href={hotPepper.urls.pc}
+                  title={hotPepper.name}
+                  special={`${hotPepper.genre.name}・${hotPepper.sub_genre?.name} ${hotPepper.catch}`}
+                  address={hotPepper.address}
+                />
               ))}
             </ul>
           )}
