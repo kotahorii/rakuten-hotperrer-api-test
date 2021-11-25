@@ -12,4 +12,4 @@ export type RakutenQueryType = typeof rakutenData.hotels
 export type HotPepperRes = typeof hotPepperData
 export type HotPepperQueryType = typeof hotPepperData.results.shop
 export type AddressRes = typeof addressData
-export type AddressQueryType = typeof addressData.results
+export type AddressQueryType = typeof addressData.results[0]

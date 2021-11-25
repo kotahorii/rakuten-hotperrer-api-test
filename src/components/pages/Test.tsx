@@ -10,8 +10,15 @@ export const Test: VFC = () => {
     refetchData,
     setAddressData,
     address,
+    prefecture,
+    city,
+    town,
+    prefectureChange,
+    cityChange,
+    townChange,
     changeAddress,
     validatedAddress,
+    isNotValidData,
     isError,
     isLoading,
     titleCut,
@@ -32,7 +39,8 @@ export const Test: VFC = () => {
         />
         <button
           onClick={setAddressData}
-          className="px-3 py-2 bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
+          disabled={isNotValidData(validatedAddress)}
+          className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
         >
           Set
         </button>
@@ -43,7 +51,29 @@ export const Test: VFC = () => {
           submit
         </button>
       </div>
-      {validatedAddress}
+      <div className="flex flex-row space-x-3">
+        <input
+          className="p-2 border-gray-200 border rounded-md"
+          type="text"
+          value={prefecture}
+          onChange={prefectureChange}
+          placeholder="都道府県"
+        />
+        <input
+          className="p-2 border-gray-200 border rounded-md"
+          type="text"
+          value={city}
+          onChange={cityChange}
+          placeholder="市"
+        />
+        <input
+          className="p-2 border-gray-200 border rounded-md"
+          type="text"
+          value={town}
+          onChange={townChange}
+          placeholder="町"
+        />
+      </div>
       <div className="grid grid-cols-2 w-full pt-5">
         <div className="flex flex-col items-center bg-green-100 rounded-lg w-full">
           {isError ? (
