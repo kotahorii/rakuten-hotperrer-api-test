@@ -3,7 +3,7 @@ import { Layout } from 'components/templates/Layout'
 import { useTest } from 'hooks/useTest'
 import { VFC } from 'react'
 import { useQueryClient } from 'react-query'
-import { HotPepperDetailQueryType, HotPepperQueryType } from 'types/types'
+import { HotPepperDetailQueryType } from 'types/types'
 
 export const Test: VFC = () => {
   const {
@@ -23,7 +23,6 @@ export const Test: VFC = () => {
     isNotValidData,
     isError,
     isLoading,
-    textCut,
   } = useTest()
   const queryClient = useQueryClient()
   const hotPepperDetailData =
@@ -88,6 +87,7 @@ export const Test: VFC = () => {
                   key={rakuten.hotel[0].hotelBasicInfo?.hotelNo}
                   src={rakuten.hotel[0].hotelBasicInfo?.hotelImageUrl}
                   href={rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl}
+                  reviewUrl={rakuten.hotel[0].hotelBasicInfo?.reviewUrl}
                   title={rakuten.hotel[0].hotelBasicInfo?.hotelName}
                   special={rakuten.hotel[0].hotelBasicInfo?.hotelSpecial}
                   address={`${rakuten.hotel[0].hotelBasicInfo?.address1}${rakuten.hotel[0].hotelBasicInfo?.address2}`}
@@ -107,7 +107,12 @@ export const Test: VFC = () => {
                   src={hotPepper.photo.pc.l}
                   href={hotPepper.urls.pc}
                   title={hotPepper.name}
-                  special={`${hotPepper.genre.name}・${hotPepper.sub_genre?.name} ${hotPepper.catch}`}
+                  genre={`${hotPepper.genre.name}${
+                    hotPepper.sub_genre?.name !== undefined
+                      ? '・' + hotPepper.sub_genre.name
+                      : ''
+                  }`}
+                  special={hotPepper.catch}
                   address={hotPepper.address}
                 />
               ))}
