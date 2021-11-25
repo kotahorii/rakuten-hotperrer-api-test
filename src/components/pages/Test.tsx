@@ -79,7 +79,7 @@ export const Test: VFC = () => {
           {isError ? (
             <p className="text-lg mt-10 ">データが存在しませんでした。</p>
           ) : (
-            <ul className="flex flex-col overflow-auto space-y-2 h-screen p-2">
+            <ul className="flex flex-col overflow-auto space-y-2 w-full h-screen p-2">
               {rakutenData?.map((rakuten) => (
                 <li
                   className="bg-green-50 p-3 flex flex-row space-x-3 text-gray-500 font-semibold rounded-lg w-full h-32"
@@ -93,7 +93,7 @@ export const Test: VFC = () => {
                     />
                   </div>
                   <a
-                    className="p-2 text-lg rounded-lg hover:bg-gray-200"
+                    className="p-2 text-lg rounded-lg hover:bg-green-100"
                     href={rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -116,15 +116,17 @@ export const Test: VFC = () => {
                   key={hotPepper.id}
                 >
                   <a
-                    className="p-2 rounded-lg hover:bg-gray-200"
+                    className="p-2 rounded-lg text-lg text-gray-500 hover:bg-green-100"
                     href={hotPepper.urls.pc}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {titleCut(hotPepper.name)}
                   </a>
-                  <p>{hotPepper.address}</p>
-                  <p>{hotPepper.genre.name}</p>
+                  <div className="flex flex-col mt-3 space-y-1">
+                    <p>{hotPepper.genre.name}</p>
+                    <p className="text-xs">{hotPepper.address}</p>
+                  </div>
                 </li>
               ))}
             </ul>
