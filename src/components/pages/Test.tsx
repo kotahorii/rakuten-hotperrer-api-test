@@ -34,7 +34,7 @@ export const Test: VFC = memo(() => {
     queryClient.getQueryData<HotPepperDetailQueryType>('hotPepperDetail')
   return (
     <Layout>
-      <div className="flex flex-row space-x-2">
+      <div className="flex flex-row mb-4 space-x-2">
         <CustomInput
           value={address}
           onChange={changeAddress}
