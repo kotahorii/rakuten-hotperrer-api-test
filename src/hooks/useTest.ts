@@ -65,7 +65,7 @@ export const useTest = () => {
   }, [refetchRakutenData, hotPepperKeyword, postHotPepperDetailParams])
 
   const setAddressData = useCallback(() => {
-    refetchAddress().then()
+    refetchAddress()
   }, [refetchAddress])
 
   const textCut = useCallback(

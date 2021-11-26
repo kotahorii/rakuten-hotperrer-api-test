@@ -1,13 +1,14 @@
 import { CustomButton } from 'components/atoms/CustomButton'
 import { CustomInput } from 'components/atoms/CustomInput'
 import { CustomCard } from 'components/organisms/CustomCard'
+import { LoadingCard } from 'components/organisms/LoadingCard'
 import { Layout } from 'components/templates/Layout'
 import { useTest } from 'hooks/useTest'
-import { VFC } from 'react'
+import { memo, VFC } from 'react'
 import { useQueryClient } from 'react-query'
 import { HotPepperDetailQueryType } from 'types/types'
 
-export const Test: VFC = () => {
+export const Test: VFC = memo(() => {
   const {
     rakutenData,
     refetchData,
@@ -67,17 +68,23 @@ export const Test: VFC = () => {
             <p className="text-lg mt-10 ">データが存在しませんでした。</p>
           ) : (
             <ul className="flex flex-col overflow-auto space-y-2 w-full h-screen p-2">
-              {rakutenData?.map((rakuten) => (
-                <CustomCard
-                  key={rakuten.hotel[0].hotelBasicInfo?.hotelNo}
-                  src={rakuten.hotel[0].hotelBasicInfo?.hotelImageUrl}
-                  href={rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl}
-                  reviewUrl={rakuten.hotel[0].hotelBasicInfo?.reviewUrl}
-                  title={rakuten.hotel[0].hotelBasicInfo?.hotelName}
-                  special={rakuten.hotel[0].hotelBasicInfo?.hotelSpecial}
-                  address={`${rakuten.hotel[0].hotelBasicInfo?.address1}${rakuten.hotel[0].hotelBasicInfo?.address2}`}
-                />
-              ))}
+              {isLoadingRakuten
+                ? [...Array(4)]
+                    .map((_, i) => i)
+                    ?.map((i) => <LoadingCard key={i} />)
+                : rakutenData?.map((rakuten) => (
+                    <CustomCard
+                      key={rakuten.hotel[0].hotelBasicInfo?.hotelNo}
+                      src={rakuten.hotel[0].hotelBasicInfo?.hotelImageUrl}
+                      href={
+                        rakuten.hotel[0].hotelBasicInfo?.hotelInformationUrl
+                      }
+                      reviewUrl={rakuten.hotel[0].hotelBasicInfo?.reviewUrl}
+                      title={rakuten.hotel[0].hotelBasicInfo?.hotelName}
+                      special={rakuten.hotel[0].hotelBasicInfo?.hotelSpecial}
+                      address={`${rakuten.hotel[0].hotelBasicInfo?.address1}${rakuten.hotel[0].hotelBasicInfo?.address2}`}
+                    />
+                  ))}
             </ul>
           )}
         </div>
@@ -86,25 +93,29 @@ export const Test: VFC = () => {
             <p className="text-lg mt-10">データが存在しませんでした。</p>
           ) : (
             <ul className="flex flex-col space-y-2 overflow-auto space-y-2 w-full h-screen p-2">
-              {hotPepperDetailData?.map((hotPepper) => (
-                <CustomCard
-                  key={hotPepper.id}
-                  src={hotPepper.photo.pc.l}
-                  href={hotPepper.urls.pc}
-                  title={hotPepper.name}
-                  genre={`${hotPepper.genre.name}${
-                    hotPepper.sub_genre?.name !== undefined
-                      ? '・' + hotPepper.sub_genre.name
-                      : ''
-                  }`}
-                  special={hotPepper.catch}
-                  address={hotPepper.address}
-                />
-              ))}
+              {isLoadingHopPepper
+                ? [...Array(4)]
+                    .map((_, i) => i)
+                    ?.map((i) => <LoadingCard key={i} />)
+                : hotPepperDetailData?.map((hotPepper) => (
+                    <CustomCard
+                      key={hotPepper.id}
+                      src={hotPepper.photo.pc.l}
+                      href={hotPepper.urls.pc}
+                      title={hotPepper.name}
+                      genre={`${hotPepper.genre.name}${
+                        hotPepper.sub_genre?.name !== undefined
+                          ? '・' + hotPepper.sub_genre.name
+                          : ''
+                      }`}
+                      special={hotPepper.catch}
+                      address={hotPepper.address}
+                    />
+                  ))}
             </ul>
           )}
         </div>
       </div>
     </Layout>
   )
-}
+})
