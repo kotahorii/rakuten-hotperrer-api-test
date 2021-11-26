@@ -25,10 +25,11 @@ export const useTest = () => {
 
   const {
     data: addressData,
-    isLoading,
+    isLoading: isLoadingAddress,
     refetch: refetchAddress,
   } = useQueryAddress(validatedAddress)
   const { postHotPepperDetailParams } = useMutateHotPepperDetail()
+  const isLoadingHopPepper = postHotPepperDetailParams.isLoading
   const hotPepperKeyword = addressData
     ? encodeURI(prefecture + city + town.split('町')[0])
     : ''
@@ -54,6 +55,7 @@ export const useTest = () => {
   const {
     data: rakutenData,
     refetch: refetchRakutenData,
+    isLoading: isLoadingRakuten,
     isError,
   } = useQueryRakutenData(rakutenKeyword)
 
@@ -92,7 +94,9 @@ export const useTest = () => {
   return {
     isNotValidData,
     isError,
-    isLoading,
+    isLoadingAddress,
+    isLoadingRakuten,
+    isLoadingHopPepper,
     validatedAddress,
     prefecture,
     city,

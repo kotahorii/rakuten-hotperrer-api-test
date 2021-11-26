@@ -1,3 +1,5 @@
+import { CustomButton } from 'components/atoms/CustomButton'
+import { CustomInput } from 'components/atoms/CustomInput'
 import { CustomCard } from 'components/organisms/CustomCard'
 import { Layout } from 'components/templates/Layout'
 import { useTest } from 'hooks/useTest'
@@ -16,65 +18,48 @@ export const Test: VFC = () => {
     city,
     town,
     prefectureChange,
+    isLoadingAddress,
+    isLoadingRakuten,
+    isLoadingHopPepper,
     cityChange,
     townChange,
     changeAddress,
     validatedAddress,
     isNotValidData,
     isError,
-    isLoading,
   } = useTest()
   const queryClient = useQueryClient()
   const hotPepperDetailData =
     queryClient.getQueryData<HotPepperDetailQueryType>('hotPepperDetail')
-  if (isLoading) return <Layout>Loading...</Layout>
   return (
     <Layout>
       <div className="flex flex-row space-x-2">
-        <input
-          className="p-2 border-gray-200 border rounded-md"
-          type="text"
+        <CustomInput
           value={address}
           onChange={changeAddress}
-          placeholder="keyword"
+          placeholder="郵便番号"
         />
-        <button
-          onClick={setAddressData}
+        <CustomButton
+          text="set"
           disabled={isNotValidData(validatedAddress)}
-          className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
-        >
-          Set
-        </button>
-        <button
-          onClick={refetchData}
+          loading={isLoadingAddress}
+          onClick={setAddressData}
+        />
+        <CustomButton
+          text="submit"
           disabled={isValidSubmit}
-          className="px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed bg-green-500 hover:bg-green-600 shadow-lg text-white rounded-full"
-        >
-          submit
-        </button>
+          loading={isLoadingRakuten || isLoadingHopPepper}
+          onClick={refetchData}
+        />
       </div>
       <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-1">
-        <input
-          className="p-2 border-gray-200 border rounded-md"
-          type="text"
+        <CustomInput
           value={prefecture}
           onChange={prefectureChange}
           placeholder="都道府県"
         />
-        <input
-          className="p-2 border-gray-200 border rounded-md"
-          type="text"
-          value={city}
-          onChange={cityChange}
-          placeholder="市"
-        />
-        <input
-          className="p-2 border-gray-200 border rounded-md"
-          type="text"
-          value={town}
-          onChange={townChange}
-          placeholder="町"
-        />
+        <CustomInput value={city} onChange={cityChange} placeholder="市" />
+        <CustomInput value={town} onChange={townChange} placeholder="町" />
       </div>
       <div className="grid md:grid-cols-2 grid-cols-1 w-full pt-5">
         <div className="flex flex-col items-center bg-green-100 rounded-lg w-full">
