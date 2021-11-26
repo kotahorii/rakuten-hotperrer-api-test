@@ -2,7 +2,7 @@ https://app.rakuten.co.jp/services/api/Travel/KeywordHotelSearch/20170426?applic
 ###
 http://webservice.recruit.co.jp/hotpepper/shop/v1/?key=1ee898166a2d501a&format=json&keyword=%E5%BE%B3%E5%B3%B6%E5%B8%82%E5%9B%BD%E5%BA%9C%E7%94%BA
 ###
-POST http://127.0.0.1:8000/api/v1/hotpeppers
+POST  https://rakutenhotpeppertest.herokuapp.com/api/v1/hotpeppers
 Content-Type: application/json
 
 {
