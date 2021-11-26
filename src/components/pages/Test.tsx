@@ -53,7 +53,7 @@ export const Test: VFC = () => {
           submit
         </button>
       </div>
-      <div className="flex flex-row space-x-3">
+      <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-1">
         <input
           className="p-2 border-gray-200 border rounded-md"
           type="text"
@@ -76,7 +76,7 @@ export const Test: VFC = () => {
           placeholder="町"
         />
       </div>
-      <div className="grid grid-cols-2 w-full pt-5">
+      <div className="grid md:grid-cols-2 grid-cols-1 w-full pt-5">
         <div className="flex flex-col items-center bg-green-100 rounded-lg w-full">
           {isError ? (
             <p className="text-lg mt-10 ">データが存在しませんでした。</p>
@@ -96,7 +96,7 @@ export const Test: VFC = () => {
             </ul>
           )}
         </div>
-        <div className="flex flex-col bg-green-200 items-center rounded-lg">
+        <div className="flex flex-col bg-green-200 items-center md:mt-0 mt-10 rounded-lg">
           {hotPepperDetailData?.length === 0 ? (
             <p className="text-lg mt-10">データが存在しませんでした。</p>
           ) : (
