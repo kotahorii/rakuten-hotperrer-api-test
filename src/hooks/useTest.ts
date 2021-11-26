@@ -26,6 +26,7 @@ export const useTest = () => {
   const {
     data: addressData,
     isLoading: isLoadingAddress,
+    isRefetching: isRefetchingAddress,
     refetch: refetchAddress,
   } = useQueryAddress(validatedAddress)
   const { postHotPepperDetailParams } = useMutateHotPepperDetail()
@@ -55,6 +56,7 @@ export const useTest = () => {
   const {
     data: rakutenData,
     refetch: refetchRakutenData,
+    isRefetching: isRefetchingRakuten,
     isLoading: isLoadingRakuten,
     isError,
   } = useQueryRakutenData(rakutenKeyword)
@@ -95,7 +97,9 @@ export const useTest = () => {
     isNotValidData,
     isError,
     isLoadingAddress,
+    isRefetchingAddress,
     isLoadingRakuten,
+    isRefetchingRakuten,
     isLoadingHopPepper,
     validatedAddress,
     prefecture,

@@ -21,6 +21,8 @@ export const Test: VFC = memo(() => {
     prefectureChange,
     isLoadingAddress,
     isLoadingRakuten,
+    isRefetchingRakuten,
+    isRefetchingAddress,
     isLoadingHopPepper,
     cityChange,
     townChange,
@@ -43,13 +45,13 @@ export const Test: VFC = memo(() => {
         <CustomButton
           text="set"
           disabled={isNotValidData(validatedAddress)}
-          loading={isLoadingAddress}
+          loading={isLoadingAddress || isRefetchingAddress}
           onClick={setAddressData}
         />
         <CustomButton
           text="submit"
           disabled={isValidSubmit}
-          loading={isLoadingRakuten || isLoadingHopPepper}
+          loading={isRefetchingRakuten || isLoadingHopPepper}
           onClick={refetchData}
         />
       </div>
@@ -68,7 +70,7 @@ export const Test: VFC = memo(() => {
             <p className="text-lg mt-10 ">データが存在しませんでした。</p>
           ) : (
             <ul className="flex flex-col overflow-auto space-y-2 w-full h-screen p-2">
-              {isLoadingRakuten
+              {isLoadingRakuten || isRefetchingRakuten
                 ? [...Array(4)]
                     .map((_, i) => i)
                     ?.map((i) => <LoadingCard key={i} />)
