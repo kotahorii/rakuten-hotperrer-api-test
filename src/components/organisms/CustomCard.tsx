@@ -34,7 +34,7 @@ export const CustomCard: VFC<Props> = memo(
             <p className=" h-5 truncate overflow-ellipsis">{special}</p>
             {!genre ? (
               <a
-                className="h-5 w-32 px-2 rounded-lg hover:bg-gray-200"
+                className="h-5 w-32 text-center px-1 rounded-lg hover:bg-gray-200"
                 href={reviewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
